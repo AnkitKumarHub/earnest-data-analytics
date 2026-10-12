@@ -22,6 +22,16 @@ export interface AuthTokens {
 }
 
 export async function registerUser(input: RegisterInput): Promise<AuthTokens> {
+  const [existingUser] = await db
+    .select({ id: usersTable.id })
+    .from(usersTable)
+    .where(eq(usersTable.email, input.email))
+    .limit(1);
+
+  if (existingUser) {
+    throw new ApiError(409, "CONFLICT", "An account with this email already exists.");
+  }
+
   const passwordHash = await bcrypt.hash(input.password, 12);
   return db.transaction(async (transaction) => {
     const [user] = await transaction
@@ -54,9 +64,17 @@ export async function refreshSession(token: string): Promise<AuthTokens> {
     throw new ApiError(401, "INVALID_REFRESH_TOKEN", "Your session has expired. Please log in again.");
   }
 
-  const sessionId = payload.jti;
+  const sessionId = payload.sid;
   const userId = Number(payload.sub);
-  if (payload.token_use !== "refresh" || !sessionId || !Number.isInteger(userId) || userId < 1) {
+  if (
+    payload.token_use !== "refresh" ||
+    typeof sessionId !== "string" ||
+    !sessionId ||
+    typeof payload.jti !== "string" ||
+    !payload.jti ||
+    !Number.isInteger(userId) ||
+    userId < 1
+  ) {
     throw new ApiError(401, "INVALID_REFRESH_TOKEN", "Your session has expired. Please log in again.");
   }
 
@@ -173,12 +191,12 @@ async function signAccessToken(user: PublicUser): Promise<string> {
 }
 
 async function signRefreshToken(userId: number, sessionId: string): Promise<string> {
-  return new SignJWT({ token_use: "refresh" })
+  return new SignJWT({ token_use: "refresh", sid: sessionId })
     .setProtectedHeader({ alg: "HS256", typ: "JWT" })
     .setIssuer(issuer)
     .setAudience(audience)
     .setSubject(String(userId))
-    .setJti(sessionId)
+    .setJti(randomUUID())
     .setIssuedAt()
     .setExpirationTime(Math.floor(Date.now() / 1000) + env.refreshTokenTtlSeconds)
     .sign(refreshKey);
