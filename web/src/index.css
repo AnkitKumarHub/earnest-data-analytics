@@ -52,30 +52,62 @@
   --animate-chai-pop: chai-pop 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
   --animate-chai-fade: chai-fade 0.15s ease;
   --animate-chai-bounce: chai-bounce 1.75s linear infinite;
-
   @keyframes chai-spin {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
-  }
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);}
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);}}
   @keyframes chai-pop {
-    from { opacity: 0; transform: translateY(8px) scale(0.98); }
-    to { opacity: 1; transform: none; }
-  }
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);}
+  to {
+    opacity: 1;
+    transform: none;}}
   @keyframes chai-fade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+  from {
+    opacity: 0;}
+  to {
+    opacity: 1;}}
   @keyframes chai-bounce {
   0%, 100% {
     transform: translateY(-6%);
-    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
-    }
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);}
   50% {
     transform: none;
-    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    }
-  }
-}
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);}}
+  --animate-chai-accordion-down: chai-accordion-down 0.25s ease-out;
+  --animate-chai-accordion-up: chai-accordion-up 0.2s ease-out
+;
+  @keyframes chai-accordion-down {
+  from {
+    height: 0;
+    opacity: 0;}
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;}}
+  @keyframes chai-accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;}
+  to {
+    height: 0;
+    opacity: 0;}}
+  @keyframes chai-drawer-right {
+  from {
+    transform: translateX(100%);}
+  to {
+    transform: none;}}
+  @keyframes chai-drawer-left {
+  from {
+    transform: translateX(-100%);}
+  to {
+    transform: none;}}
+  @keyframes chai-drawer-bottom {
+  from {
+    transform: translateY(100%);}
+  to {
+    transform: none;}}}
 
 :root {
   --radius: 0.625rem;

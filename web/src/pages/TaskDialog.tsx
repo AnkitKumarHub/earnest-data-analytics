@@ -1,11 +1,12 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { getApiError, taskApi } from "@/lib/api";
 import type { Task, TaskStatus } from "@/lib/types";
+import { DatePicker } from "@/components/date-picker";
+import { StatusSelect } from "@/components/status-select";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogActions } from "@/components/ui/dialog";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
 
@@ -39,8 +40,11 @@ export function TaskDialog({ open, task, onClose, onSaved }: TaskDialogProps) {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!title.trim()) {
-      setFieldErrors({ title: "A task title is required." });
+    const errors: Record<string, string> = {};
+    if (!title.trim()) errors.title = "A task title is required.";
+    if (!dueDate) errors.dueDate = "A due date is required.";
+    if (Object.keys(errors).length) {
+      setFieldErrors(errors);
       setMessage("");
       return;
     }
@@ -111,26 +115,16 @@ export function TaskDialog({ open, task, onClose, onSaved }: TaskDialogProps) {
         </Field>
         <div className={`grid gap-4 ${isEditing ? "sm:grid-cols-2" : ""}`}>
           <Field label="Due date" error={fieldErrors.dueDate}>
-            <Input
-              name="dueDate"
-              type="date"
-              required
-              value={dueDate}
-              onChange={(event) => setDueDate(event.target.value)}
-            />
+            <DatePicker value={dueDate} onChange={setDueDate} required />
           </Field>
           {isEditing && (
             <Field label="Status">
-              <Select
+              <StatusSelect
                 value={status}
-                onChange={(event) => setStatus(event.target.value as TaskStatus)}
-                wrapperClassName="w-full"
+                onValueChange={setStatus}
+                aria-label="Status"
                 className="w-full"
-              >
-                <option value="pending">Pending</option>
-                <option value="in_progress">In progress</option>
-                <option value="completed">Completed</option>
-              </Select>
+              />
             </Field>
           )}
         </div>

@@ -6,6 +6,8 @@ import { getApiError, taskApi } from "@/lib/api";
 import type { Task, TaskPage, TaskStatus } from "@/lib/types";
 import { TaskDialog } from "@/pages/TaskDialog";
 import { Backdrop } from "@/components/backdrop";
+import { DatePicker } from "@/components/date-picker";
+import { StatusSelect } from "@/components/status-select";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -14,11 +16,9 @@ import { Chip } from "@/components/ui/chip";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { Highlight } from "@/components/ui/highlight";
 import { IconButton } from "@/components/ui/icon-button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/field";
 import { Pagination } from "@/components/ui/pagination";
 import { SearchInput } from "@/components/ui/search-input";
-import { Select } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -333,26 +333,26 @@ export function DashboardPage() {
                 )}
               </Button>
               {datesOpen && (
-                <div className="absolute right-0 z-10 mt-2 w-64 space-y-3 rounded-xl border border-card-edge bg-card p-4 text-card-foreground">
+                <div className="absolute right-0 z-10 mt-2 w-72 space-y-3 rounded-xl border border-card-edge bg-card p-4 text-card-foreground">
                   <p className="text-sm font-medium">Due date range</p>
                   <div className="space-y-1.5">
                     <Label htmlFor="due-from">From</Label>
-                    <Input
+                    <DatePicker
                       id="due-from"
-                      type="date"
                       value={dueFrom}
                       max={dueTo || undefined}
-                      onChange={(event) => updateFilters({ dueFrom: event.target.value || null })}
+                      placeholder="Start date"
+                      onChange={(value) => updateFilters({ dueFrom: value || null })}
                     />
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="due-to">Through</Label>
-                    <Input
+                    <DatePicker
                       id="due-to"
-                      type="date"
                       value={dueTo}
                       min={dueFrom || undefined}
-                      onChange={(event) => updateFilters({ dueTo: event.target.value || null })}
+                      placeholder="End date"
+                      onChange={(value) => updateFilters({ dueTo: value || null })}
                     />
                   </div>
                   {(dueFrom || dueTo) && (
@@ -509,20 +509,14 @@ export function DashboardPage() {
                         </div>
                       </div>
                       <CardFooter className="mt-0 w-full items-center justify-end gap-2 pt-0 sm:w-auto sm:shrink-0">
-                        <label className="sr-only" htmlFor={`status-${task.id}`}>
-                          Change status for {task.title}
-                        </label>
-                        <Select
+                        <StatusSelect
                           id={`status-${task.id}`}
                           value={task.status}
                           disabled={busyTaskId === task.id}
-                          onChange={(event) => void changeStatus(task, event.target.value as TaskStatus)}
+                          aria-label={`Change status for ${task.title}`}
                           className="min-w-[8.5rem] text-xs"
-                        >
-                          <option value="pending">Pending</option>
-                          <option value="in_progress">In progress</option>
-                          <option value="completed">Completed</option>
-                        </Select>
+                          onValueChange={(nextStatus) => void changeStatus(task, nextStatus)}
+                        />
                         <IconButton aria-label={`Edit ${task.title}`} onClick={() => openEdit(task)}>
                           <SquarePen />
                         </IconButton>

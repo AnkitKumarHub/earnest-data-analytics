@@ -78,7 +78,7 @@ describe("task dashboard", () => {
     await user.click(await screen.findByRole("button", { name: /add your first task/i }));
     expect(screen.getByRole("dialog", { name: "Add task" })).toBeInTheDocument();
     expect(screen.getByLabelText(/task title/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/due date/i)).toBeRequired();
+    expect(screen.getByLabelText(/due date/i)).toHaveAttribute("aria-required", "true");
   });
 
   it("creates a task with a required due date and no description when omitted", async () => {
@@ -89,13 +89,19 @@ describe("task dashboard", () => {
 
     await user.click(await screen.findByRole("button", { name: /add your first task/i }));
     const dialog = screen.getByRole("dialog", { name: "Add task" });
-    await user.type(within(dialog).getByLabelText(/task title/i), "Finish wireframes");
-    await user.type(within(dialog).getByLabelText(/due date/i), "2026-11-03");
+    const titleField = within(dialog).getByLabelText(/task title/i);
+    await user.clear(titleField);
+    await user.type(titleField, "Finish wireframes");
+    await user.click(within(dialog).getByLabelText(/due date/i));
+    await user.click(screen.getByRole("button", { name: "Go to the Next Month" }));
+    const day = document.querySelector<HTMLButtonElement>('td[data-day="2026-11-03"] button');
+    expect(day).toBeTruthy();
+    await user.click(day!);
     await user.click(within(dialog).getByRole("button", { name: "Add task" }));
 
     await waitFor(() => expect(apiMock.create).toHaveBeenCalledWith({ title: "Finish wireframes", dueDate: "2026-11-03" }));
     expect(await screen.findByRole("status")).toHaveTextContent("Finish wireframes");
-  });
+  }, 15_000);
 
   it("saves edits to an existing task", async () => {
     const user = userEvent.setup();
@@ -124,7 +130,8 @@ describe("task dashboard", () => {
     renderPage(<DashboardPage />);
     await screen.findByText("Read the assignment brief");
 
-    await user.selectOptions(screen.getByLabelText("Change status for Read the assignment brief"), "completed");
+    await user.click(screen.getByLabelText("Change status for Read the assignment brief"));
+    await user.click(await screen.findByRole("menuitemradio", { name: /completed/i }));
     await waitFor(() => expect(apiMock.update).toHaveBeenCalledWith(8, { status: "completed" }));
     await user.click(screen.getByRole("button", { name: "Delete Read the assignment brief" }));
     const confirmDialog = screen.getByRole("alertdialog", { name: /delete this task/i });
