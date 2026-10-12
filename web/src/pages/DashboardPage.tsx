@@ -198,7 +198,30 @@ export function DashboardPage() {
     try {
       const updated = await taskApi.update(task.id, { status: nextStatus });
       setNotice(`“${updated.title}” moved to ${statusLabel(nextStatus).toLowerCase()}.`);
-      setRefreshKey((key) => key + 1);
+      const filteredOut = Boolean(status && updated.status !== status);
+      if (filteredOut && page > 1 && taskPage?.items.length === 1) {
+        goToPage(page - 1);
+      } else {
+        setTaskPage((current) => {
+          if (!current) return current;
+          if (filteredOut) {
+            const items = current.items.filter((item) => item.id !== updated.id);
+            const totalItems = Math.max(0, current.pagination.totalItems - 1);
+            return {
+              items,
+              pagination: {
+                ...current.pagination,
+                totalItems,
+                totalPages: Math.ceil(totalItems / current.pagination.pageSize),
+              },
+            };
+          }
+          return {
+            ...current,
+            items: current.items.map((item) => (item.id === updated.id ? updated : item)),
+          };
+        });
+      }
     } catch (error) {
       setActionError(getApiError(error).message);
     } finally {

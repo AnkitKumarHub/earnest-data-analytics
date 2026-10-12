@@ -129,10 +129,14 @@ describe("task dashboard", () => {
     const user = userEvent.setup();
     renderPage(<DashboardPage />);
     await screen.findByText("Read the assignment brief");
+    expect(apiMock.list).toHaveBeenCalledTimes(1);
 
     await user.click(screen.getByLabelText("Change status for Read the assignment brief"));
     await user.click(await screen.findByRole("menuitemradio", { name: /completed/i }));
     await waitFor(() => expect(apiMock.update).toHaveBeenCalledWith(8, { status: "completed" }));
+    expect(await screen.findByRole("status")).toHaveTextContent("moved to completed");
+    expect(screen.getByLabelText("Reopen Read the assignment brief")).toBeInTheDocument();
+    expect(apiMock.list).toHaveBeenCalledTimes(1);
     await user.click(screen.getByRole("button", { name: "Delete Read the assignment brief" }));
     const confirmDialog = screen.getByRole("alertdialog", { name: /delete this task/i });
     expect(confirmDialog).toHaveTextContent("Delete “Read the assignment brief”? This can’t be undone.");
