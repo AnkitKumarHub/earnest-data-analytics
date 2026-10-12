@@ -45,11 +45,21 @@ A full-stack take-home: a **React + TypeScript** web app and an **Express** API.
 
 | | |
 | --- | --- |
-| **Web** | https://task-manager-nine-sigma-49.vercel.app/login |
-| **API** | https://task-manager-300v.onrender.com |
-| **Health** | https://task-manager-300v.onrender.com/health |
+| **Web** | <https://task-manager-nine-sigma-49.vercel.app/login> |
+| **API** | <https://task-manager-300v.onrender.com> |
+| **Health** | <https://task-manager-300v.onrender.com/health> |
 
 Sign in with the [demo account](#demo-account) below. The API on Render may take a few seconds to wake up on the first request.
+
+### Demo account
+
+Sign in on the live app with this account. The tasks below are on that user.
+
+| Field | Value |
+| --- | --- |
+| **Name** | Demo User |
+| **Email** | <Demo@user.com> |
+| **Password** | demouser123 |
 
 **Run it locally** (optional):
 
@@ -189,35 +199,15 @@ sequenceDiagram
 
 | Surface | URL |
 | --- | --- |
-| **Live web app** | https://task-manager-nine-sigma-49.vercel.app/login |
-| **Live API** | https://task-manager-300v.onrender.com |
-| **Live health** | https://task-manager-300v.onrender.com/health |
-| **Local web app** | http://localhost:5173 (after `pnpm dev` in `web/`) |
-| **Local API** | http://localhost:8080 |
-
-### Demo account
-
-Sign in on the live app with this account. The tasks below are on that user.
-
-| Field | Value |
-| --- | --- |
-| **Name** | Demo User |
-| **Email** | Demo@user.com |
-| **Password** | demouser123 |
-
-| Title | Description | Status | Due date |
-| --- | --- | --- | --- |
-| Prepare sprint demo notes | Write the talking points for Friday's demo. | In progress | 2026-10-14 |
-| Review design feedback | Go through comments on the dashboard layout. | In progress | 2026-10-15 |
-| Pay electricity bill | Check the amount and pay before the due date. | Pending | 2026-10-18 |
-| Book dentist appointment | Call the clinic and confirm a morning slot. | Pending | 2026-10-22 |
-| Submit expense receipts | Upload last month's travel receipts. | Completed | 2026-10-10 |
-
-On a fresh local database this account does not exist until you register it there too.
+| **Live web app** | <https://task-manager-nine-sigma-49.vercel.app/login> |
+| **Live API** | <https://task-manager-300v.onrender.com> |
+| **Live health** | <https://task-manager-300v.onrender.com/health> |
+| **Local web app** | <http://localhost:5173> (after `pnpm dev` in `web/`) |
+| **Local API** | <http://localhost:8080> |
 
 ### What to click
 
-1. Open the [live login page](https://task-manager-nine-sigma-49.vercel.app/login) and sign in as **Demo@user.com** with password **demouser123**.
+1. Open the [live login page](https://task-manager-nine-sigma-49.vercel.app/login) and sign in as **<Demo@user.com>** with password **demouser123**.
 2. You should land on **My tasks** and see the five tasks above.
 3. Filter by status, search for “demo”, and narrow the due-date range. The URL query updates with the filter.
 4. **Add task**, edit one title, mark a pending task completed, then delete a task you added and confirm.
