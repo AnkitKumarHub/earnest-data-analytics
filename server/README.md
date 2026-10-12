@@ -25,10 +25,10 @@ The initial scaffold migration is followed by a reset migration that drops the t
 | `REFRESH_TOKEN_SECRET` | Refresh-token signing secret; must differ from access secret | Required, 32+ characters |
 | `ACCESS_TOKEN_TTL_SECONDS` | Access-token lifetime | `1800` (30 minutes) |
 | `REFRESH_TOKEN_TTL_SECONDS` | Refresh-token lifetime | `604800` (7 days) |
-| `COOKIE_SAME_SITE` | Cookie cross-site policy: `lax`, `strict`, or `none` | Local: `lax`; production: `none` |
-| `COOKIE_SECURE` | Send cookies only over secure connections | Local: `false`; production: `true` |
+| `COOKIE_SAME_SITE` | Cookie cross-site policy: `lax`, `strict`, or `none` | Cross-origin local + production: `none` |
+| `COOKIE_SECURE` | Send cookies only over secure connections | Cross-origin local + production: `true` |
 
-In production, set the frontend's exact origin and serve the API over HTTPS. The default production cookie policy is `SameSite=None; Secure`, for a frontend and backend hosted on different sites. Browsers send Secure cookies only over secure connections; cross-site cookie use may also be affected by browser privacy settings.
+Local default in `.env.example` mirrors a split deploy: Vite on `http://localhost:5173` and the API on `http://localhost:8080`, with `SameSite=None; Secure`. Chrome and Edge treat `http://localhost` as a secure context for these cookies. In production, set `FRONTEND_ORIGIN` to the exact frontend origin and serve the API over HTTPS.
 
 ## API
 
