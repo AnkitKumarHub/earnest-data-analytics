@@ -356,33 +356,6 @@ All successful JSON responses use a `data` property. All errors use an `error` p
 
 Dates are calendar dates, `YYYY-MM-DD`. Status values are `pending`, `in_progress`, and `completed`.
 
-Example list:
-
-```json
-{
-  "data": {
-    "items": [],
-    "pagination": { "page": 1, "pageSize": 10, "totalItems": 0, "totalPages": 0 }
-  }
-}
-```
-
-Example error:
-
-```json
-{
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Check the highlighted fields.",
-    "fields": { "title": "Title is required." }
-  }
-}
-```
-
-Example filtered list:
-
-`GET /tasks?page=1&pageSize=10&status=in_progress&dueFrom=2026-10-01&dueTo=2026-10-31&search=report`
-
 ---
 
 ## Testing and quality
