@@ -16,7 +16,7 @@ const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
 const DropdownMenuSub = DropdownMenuPrimitive.Sub
 
 const panel =
-  'z-50 min-w-[10rem] overflow-x-hidden overflow-y-auto rounded-lg border border-gray-400/20 bg-background/80 p-1.5 text-popover-foreground backdrop-blur-lg dark:border-orange-50/10 motion-safe:data-[state=open]:animate-chai-fade'
+  'z-[110] min-w-[10rem] overflow-x-hidden overflow-y-auto rounded-lg border border-gray-400/20 bg-background/80 p-1.5 text-popover-foreground backdrop-blur-lg dark:border-orange-50/10 motion-safe:data-[state=open]:animate-chai-fade'
 
 const item =
   "relative flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-[15px] outline-none select-none transition-colors duration-150 focus:bg-accent/60 focus:text-brand data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"

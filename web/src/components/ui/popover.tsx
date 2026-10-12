@@ -23,7 +23,7 @@ function PopoverContent({ className, align = 'center', sideOffset = 6, ...props 
         align={align}
         sideOffset={sideOffset}
         className={cn(
-          'z-50 w-72 rounded-xl border border-gray-400/20 bg-background/85 p-4 text-popover-foreground backdrop-blur-lg outline-none motion-safe:animate-chai-fade dark:border-orange-50/10',
+          'z-[110] w-72 rounded-xl border border-gray-400/20 bg-background/85 p-4 text-popover-foreground backdrop-blur-lg outline-none motion-safe:animate-chai-fade dark:border-orange-50/10',
           className,
         )}
         {...props}
